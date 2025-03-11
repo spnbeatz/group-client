@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.site-bg {
+/*     background: radial-gradient(circle, #152625, #bb077e); */
+/*     background: radial-gradient(circle, #c4330b, #f54e7e); */
+/*     background: linear-gradient(267deg, #c607ab, #b7792e); */
+    background: linear-gradient(180deg, #9eb3db 0%, #d6d6d6 100%);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #9eb3db;
+    border-radius: 5px;
+    opacity: 20%;
+    width: 1px;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+    opacity: 20%;
+    margin-right: 2px;
+    
+}
