@@ -7,28 +7,31 @@ import {Input} from "@heroui/input";
 import {Visibility, VisibilityOff, Person, Mail, Key, Wc} from "@mui/icons-material";
 import { inputIconSize } from '@/config/sizes';
 import {Select, SelectSection, SelectItem} from "@heroui/select";
+import { useAuthQuery } from '@/queries/useAuth';
 
 interface User {
-    Email: string;
-    Username: string;
-    Password: string;
-    Sex: string;
+    email: string;
+    username: string;
+    password: string;
+    sex: string;
     confirmPassword: string;
   }
 
 interface RegisterProps {
   setScreen: React.Dispatch<React.SetStateAction<string>>;
-  login: (token: string, rememberMe: boolean) => void
+
 }
 
 
-export const RegisterForm: React.FC<RegisterProps> = ({ setScreen, login: setToken }) => {
+export const RegisterForm: React.FC<RegisterProps> = ({ setScreen }) => {
+
+    const { loginMutation, registerMutation } = useAuthQuery();
 
     const [values, setValues] = useState<User>({
-      Email: '',
-      Username: '',
-      Password: '',
-      Sex: '',
+      email: '',
+      username: '',
+      password: '',
+      sex: '',
       confirmPassword: ''
     });
 
@@ -46,7 +49,7 @@ export const RegisterForm: React.FC<RegisterProps> = ({ setScreen, login: setTok
 
     const onValueChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-      type: "Email" | "Username" | "Password" | "Sex" | 'confirmPassword'
+      type: "email" | "username" | "password" | "sex" | 'confirmPassword'
     ) => {
       const valueCopy = {...values};
       valueCopy[`${type}`] = e.target.value;
@@ -56,20 +59,7 @@ export const RegisterForm: React.FC<RegisterProps> = ({ setScreen, login: setTok
     const handleSubmit = async (values: User) => {
       try {
           const { confirmPassword, ...userData } = values;
-          const data = await register(userData);
-  
-          if (!data || !data.email) {
-              throw new Error("Registration failed or missing email in response");
-          }
-          const loginData = { Email: data.email, Password: userData.Password };
-          console.log(loginData, "login Data");
-          const token = await login(loginData);
-  
-          if (!token) {
-              throw new Error("Login failed after registration");
-          }
-          setToken(token, true);
-          console.log("User logged in successfully:", token);
+          registerMutation.mutate(userData);
       } catch (error) {
           console.error("Error during registration or login:", error);
       }
@@ -99,18 +89,18 @@ export const RegisterForm: React.FC<RegisterProps> = ({ setScreen, login: setTok
         <Input 
           isClearable
           startContent={<Mail className="text-default-400 pointer-events-none" style={{width: inputIconSize}}/>}
-          onChange={(e) => onValueChange(e, "Email")}
+          onChange={(e) => onValueChange(e, "email")}
           placeholder='E-mail'
           type="email"
           variant="bordered"
           size='md'
-          isInvalid={values.Email === "" ? false : validate("email", values.Email) ? false : true}
+          isInvalid={values.email === "" ? false : validate("email", values.email) ? false : true}
           errorMessage="Please enter a valid email"
         />
         <Input 
           isClearable
           startContent={<Person className="text-default-400 pointer-events-none" style={{width: inputIconSize}}/>}
-          onChange={(e) => onValueChange(e, "Username")}
+          onChange={(e) => onValueChange(e, "username")}
           placeholder='Username'
           type="text"
           variant="bordered"
@@ -120,7 +110,7 @@ export const RegisterForm: React.FC<RegisterProps> = ({ setScreen, login: setTok
         <Input 
           startContent={<Key className="text-default-400 pointer-events-none" style={{width: inputIconSize}}/>}
           type={isVisible ? "text" : "password"}
-          onChange={(e) => onValueChange(e, "Password")}
+          onChange={(e) => onValueChange(e, "password")}
           placeholder='Password'
           variant="bordered"
           size='md'
@@ -165,7 +155,7 @@ export const RegisterForm: React.FC<RegisterProps> = ({ setScreen, login: setTok
           variant='bordered' 
           size='md' 
           label="Select your sex" 
-          onChange={(e)=> onValueChange(e, "Sex")}
+          onChange={(e)=> onValueChange(e, "sex")}
           startContent={<Wc className='text-default-400 pointer-events-none' style={{width:inputIconSize}}/>}
         >
           {sexValues.map((sex) => (

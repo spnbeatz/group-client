@@ -1,0 +1,21 @@
+zrobic w backendzie pobieranie danych uzytkownika na podstrone w modelu
+
+User {
+    details: {
+        username,
+        email,
+        avatar,
+        city
+    },
+    counts: {
+        followers,
+        followings,
+        posts
+    },
+    images: [
+        {
+            postId,
+            imageUrl
+        }
+    ]
+}

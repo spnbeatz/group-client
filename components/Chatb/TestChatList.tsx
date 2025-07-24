@@ -3,7 +3,7 @@
 import { Panel } from "../Panel"
 import { useChat } from "@/context/ChatContext"
 import { createChat } from "@/api/chat"
-import { useAuthContext } from "@/context/AuthContext"
+import { useAuthContext } from "@/context/AuthWrapper"
 import { useEffect } from "react"
 import { LoadingScreen } from "../LoadingScreen"
 

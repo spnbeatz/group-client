@@ -6,8 +6,11 @@ import * as React from "react";
 import { HeroUIProvider } from "@heroui/system";
 import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { AuthProvider } from "../context/AuthContext";
+import AuthWrapper from "@/context/AuthWrapper";
 import { ChatProvider } from "../context/ChatContext";
+import { Provider } from "react-redux";
+import { store } from "@/state/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -24,17 +27,20 @@ declare module "@react-types/shared" {
 
 export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
-
+  const queryClient = new QueryClient();
   return (
     <HeroUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
-        <AuthProvider>
-          <ChatProvider>
-            {children}
-          </ChatProvider>
-          
-        </AuthProvider>
-        
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <AuthWrapper>
+              {children}
+            </AuthWrapper>
+          </QueryClientProvider>
+
+        </Provider>
+
+
       </NextThemesProvider>
     </HeroUIProvider>
   );

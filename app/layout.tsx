@@ -10,6 +10,7 @@ import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { ChatLayoutPanel } from "@/components/Chat/ChatLayoutPanel";
+import { NotifyLayout } from "@/components/Notifications/NotifyLayout";
 
 export const metadata: Metadata = {
   title: {
@@ -49,6 +50,7 @@ export default function RootLayout({
             <main className="p-4 flex-grow w-full h-full overflow-hidden overflow-y-scroll pt-11">
               
               {children}
+              <NotifyLayout />
               <ChatLayoutPanel />
             </main>
             

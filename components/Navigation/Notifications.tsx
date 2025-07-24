@@ -1,9 +1,6 @@
 "use client"
 
 import {  Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownSection,  DropdownItem} from "@heroui/dropdown";
-import { Avatar } from "@heroui/avatar";
-import { User } from "@heroui/user";
-import { useAuthContext } from "@/context/AuthContext";
 import { Notifications as Notify } from "@mui/icons-material";
 
 export const Notifications = () => {

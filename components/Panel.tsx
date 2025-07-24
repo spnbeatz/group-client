@@ -2,7 +2,7 @@ import { Divider } from "@heroui/divider"
 
 export const Panel = ({children, className}: {children: React.ReactNode, className?: string}) => {
     return (
-        <div className={`w-full flex flex-col shadow-md justify-between items-center mt-6 p-4 gap-2 bg-white rounded-md ${className}`}>
+        <div className={`w-full flex flex-col shadow-small justify-between items-center mt-6 p-4 bg-white rounded-sm ${className}`}>
             {children}
         </div>
     )

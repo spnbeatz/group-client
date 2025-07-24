@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { fetchChatList, fetchChatData } from '../services/chatService';
-import { useAuthContext } from './AuthContext';
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 import { usePolling } from '../hooks/usePolling';
 import { ChatListItemProps, ActiveChatProps } from '../types';
 
@@ -19,20 +20,21 @@ interface ChatProviderProps {
 }
 
 const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
-  const { token, userData } = useAuthContext();
+  const { token, userData } = useSelector((state: RootState) => state.auth);
+
   const [activeChats, setActiveChats] = useState<ActiveChatProps[]>([]);
   const [chatList, setChatList] = useState<ChatListItemProps[] | null>(null);
   
   const pollingIntervalTime = usePolling(10000, () => {
-    if (userData?.id) {
-      fetchChatList(userData.id);
+    if (userData?._id) {
+      fetchChatList(userData._id, token);
     }
   });
 
   useEffect(() => {
     if (userData) {
       const fetchChats = async () => {
-        const chats = await fetchChatList(userData.id);
+        const chats = await fetchChatList(userData._id, token);
         setChatList(chats);
       };
       fetchChats();
@@ -41,7 +43,7 @@ const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
   const openChat = async (chatId: string) => {
     if (activeChats.some(chat => chat.id === chatId)) return;
-    const chatData = await fetchChatData(chatId);
+    const chatData = await fetchChatData(chatId, token);
     setActiveChats(prevActiveChats => [...prevActiveChats, { ...chatData, minimized: false }]);
   };
 

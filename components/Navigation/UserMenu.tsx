@@ -3,11 +3,16 @@
 import {  Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownSection,  DropdownItem} from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
 import { User } from "@heroui/user";
-import { useAuthContext } from "@/context/AuthContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/state/store";
+import { logout } from "@/state/reducers/authSlice";
 
 export const UserMenu = () => {
+    const dispatch = useDispatch();
 
-    const { userData, logout } = useAuthContext();
+    const userData = useSelector((state: RootState) => state.auth.userData);
+
+    
 
     return (
         <div className="flex items-center gap-4">
@@ -35,7 +40,7 @@ export const UserMenu = () => {
                     <DropdownItem key="system">System</DropdownItem>
                     <DropdownItem key="configurations">Configurations</DropdownItem>
                     <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                    <DropdownItem key="logout" color="danger" onPress={() => logout()}>
+                    <DropdownItem key="logout" color="danger" onPress={() => dispatch(logout())}>
                         Log Out
                     </DropdownItem>
                 </DropdownMenu>

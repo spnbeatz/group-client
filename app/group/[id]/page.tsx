@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useContext, useState } from "react";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/context/AuthWrapper";
 import { GroupCreationModal } from "@/components/GroupCreationModal/GroupCreationModal";
 
 

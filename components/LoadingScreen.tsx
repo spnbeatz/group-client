@@ -2,7 +2,6 @@
 
 import React, {CSSProperties} from "react";
 import { RingLoader } from "react-spinners";
-import { useAuthContext } from "@/context/AuthContext";
 
 const override: CSSProperties = {
     margin: "0 auto",

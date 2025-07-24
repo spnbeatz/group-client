@@ -2,17 +2,20 @@
 
 import {  Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownSection,  DropdownItem} from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
-import { User } from "@heroui/user";
-import { useAuthContext } from "@/context/AuthContext";
-import { useChat } from "@/context/ChatContext";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 import { ChatBubble } from "@mui/icons-material";
-import { ColumnWrapper } from "../ColumnWrapper";
 import { ChatListItemProps } from "@/types";
 import {Badge} from "@heroui/badge";
+import { useChatQuery } from "@/queries/useChat";
 
 export const Messages = () => {
 
-    const { chatList, openChat } = useChat();
+    const chatList = useSelector((state: RootState) => state.chat.chatList);
+    const { openChat, getChatListQuery } = useChatQuery();
+
+    getChatListQuery()
+
 
     return (
         <div className="flex items-center gap-4">
@@ -23,7 +26,7 @@ export const Messages = () => {
                 <DropdownMenu>
                     {(chatList ?? []).map((chat,index) => {
                         return (
-                            <DropdownItem key={chat.id + index} className="h-14 gap-2" onPress={() => openChat(chat.id)}>
+                            <DropdownItem key={chat.id + index} className="h-14 gap-2" onAction={() => openChat(chat.id)}>
                                 <MessagesListItem chat={chat} />
                             </DropdownItem>
                         )
@@ -50,18 +53,18 @@ const MessagesListItem = ({chat} : {chat: ChatListItemProps}) => {
         }
     }
 
-    const { userData }= useAuthContext();
+    const userData = useSelector((state: RootState) => state.auth.userData);
     return (
         <div className="w-full h-full flex flex-row items-center justify-start gap-2">
-            <Badge color={getStatusColor(chat.participants.find(user => user.id !== userData?.id)?.status || "offline")} content="" placement="bottom-right" shape="circle">
-                <Avatar size="sm" isBordered src={chat.participants.find(user => user.id !== userData?.id)?.avatar} />
+            <Badge /* color={getStatusColor(chat.participants.find(user => user._id !== userData?._id)?.status || "offline")} */  color="default" content="" placement="bottom-right" shape="circle">
+                <Avatar size="sm" isBordered src={chat.participants.find(user => user._id !== userData?._id)?.avatar} />
             </Badge>
             
             <div className="flex flex-col justify-center items-start">
                 {chat.participants.map((participant, index) => {
-                    if(participant.id !== userData?.id){
+                    if(participant._id !== userData?._id){
                         return (
-                            <p className="text-xs font-semibold text-gray-500" key={participant.id + participant.avatar}>
+                            <p className="text-xs font-semibold text-gray-500" key={participant._id + participant.avatar}>
                                 {participant.username} 
                                 {chat.participants.length -1 > 2
                                     ? index > 1 && index !== chat.participants.length - 2 

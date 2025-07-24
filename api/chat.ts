@@ -1,10 +1,22 @@
-export const createChat = async (participants: string[]) => {
-    const response = await fetch("http://localhost:4000/chat-api/create", {
+import { Participant } from "@/types/chat";
+
+const chatEndpoint = "http://localhost:5021/chats/";
+
+
+export const createChat = async (participants: Participant[], token: string | null) => {
+
+    const formData = new FormData();
+    participants.forEach((participant, index) => {
+        formData.append(`participants[${index}].username`, participant.username);
+        formData.append(`participants[${index}].id`, participant.id);
+        formData.append(`participants[${index}].avatar`, participant.avatar);
+    })
+    const response = await fetch(`${chatEndpoint}chat-api/create`, {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(participants)
+        body: formData
     });
 
     if (!response.ok) {
@@ -16,12 +28,14 @@ export const createChat = async (participants: string[]) => {
     return await response.json();
 }
 
-export const getChatList = async (userId: string) => {
+export const getChatList = async (userId: string, token: string | null) => {
+    console.log("token z getChatList", token)
     try{
-        const response = await fetch(`http://localhost:4000/chat-api/chat-list/${userId}`, {
+        const response = await fetch(`${chatEndpoint}chat-api/chat-list/${userId}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
             }
         });
     
@@ -41,12 +55,13 @@ export const getChatList = async (userId: string) => {
 
 }
 
-export const getChatData = async (chatId:string) => {
+export const getChatData = async (chatId:string, token: string | null) => {
     try {
-        const response = await fetch(`http://localhost:4000/chat-api/chat/${chatId}`, {
+        const response = await fetch(`${chatEndpoint}chat-api/chat/${chatId}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
             }
         })
 
@@ -64,12 +79,13 @@ export const getChatData = async (chatId:string) => {
 
 }
 
-export const getMessages = async (chatId: string, limit: number) => {
+export const getMessages = async (chatId: string, skip: number, limit: number, token: string | null) => {
     try{
-        const response = await fetch(`http://localhost:4000/chat-api/messages/${chatId}?limit=${limit}`, {
+        const response = await fetch(`${chatEndpoint}chat-api/messages/${chatId}?limit=${limit}&skip=${skip}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
             }
         });
     

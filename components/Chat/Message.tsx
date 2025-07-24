@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { Avatar } from "@heroui/avatar";
-import { MessageProps } from "@/types";
-import { useAuthContext } from "@/context/AuthContext";
+import { FormattedMessagesProps, MessageProps } from "@/types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 import { Divider } from "@heroui/divider";
 import { formatDate } from "@/config/dateFormat";
 import { Bubble } from "./Bubble";
 
 
-export const Message = (
-    {
-        message
-    }: {
-        message: MessageProps
-    }) => {
+export const Message = ({message}: {message: FormattedMessagesProps}) => {
 
-    const { userData } = useAuthContext();
+    const {userData} = useSelector((state: RootState) => state.auth);
 
     const styles = {
         owner: "flex-row-reverse",
@@ -44,7 +40,7 @@ export const Message = (
                                 length={message.messages.length} 
                                 message={msg}
                                 isOwner={isOwner}
-                                key={msg + index + message.messages.length + "asdasda"}
+                                key={msg.message + index + message.messages.length + "asdasda"}
                             />
                         )
                     })}

@@ -1,11 +1,16 @@
+const usersEndpoint = "http://localhost:5021/users";
+
 export const register = async (userData: any) => {
     console.log("register attempt")
-    const result = await fetch("http://localhost:5037/api/user/create", {
+    const formData = new FormData();
+    Object.entries(userData).forEach(([key, value]) => {
+      if (value === null || value === undefined) return;
+      formData.append(key, value.toString()); // Zapewnia, że wartość jest stringiem
+    });
+    const result = await fetch("http://localhost:5037/create", {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // Ustalamy, że wysyłamy JSON
-        },
-        body: JSON.stringify(userData) // Zamiana danych na JSON
+
+        body: formData
       })
       .then( async response => {
         if (!response.ok) {
@@ -24,11 +29,10 @@ export const register = async (userData: any) => {
     return result;
 };
 
-export const login = async (credentials: { Email: string; Password: string }) => {
+export const login = async (credentials: { email: string; password: string }) => {
   console.log(credentials, "credentials");
-
   try {
-      const response = await fetch('http://localhost:5037/api/auth/login', {
+      const response = await fetch('http://localhost:4010/login', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json', // Ustalamy, że wysyłamy JSON
@@ -59,9 +63,8 @@ export const login = async (credentials: { Email: string; Password: string }) =>
 
 
 export const getUserData = async (token: string | null) => {
-    console.log(token, " getUserDataToken");
     if(!token) return;
-    const response = await fetch('http://localhost:5037/api/user/get', {
+    const response = await fetch('http://localhost:5021/users/user', {
         method: 'GET',
         headers: {
             'Authorization' : `Bearer ${token}`,
@@ -78,7 +81,7 @@ export const getUserData = async (token: string | null) => {
 
 export const listUsers = async (token: string | null) => {
     if(!token) return;
-    const response = await fetch('http://localhost:5037/api/user/all', {
+    const response = await fetch(`${usersEndpoint}/api/user/all`, {
         method: 'GET',
         headers: {
             'Authorization' : `Bearer ${token}`,
@@ -96,4 +99,37 @@ export const listUsers = async (token: string | null) => {
 
     return data;
 }
+
+export const getMinUserData = async (userId: string, token: string | null) => {
+  try {
+    const response = await fetch(`${usersEndpoint}/${userId}/basic-data`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if(response.ok) {
+      return await response.json();
+    } else {
+      console.log("Cannot fetch minimum user data");
+    }
+  } catch (error) {
+    console.log("Server error in fetching minimum user data: ", error)
+  }
+}
  
+export const getUser = async (id: string | string[] | undefined) => {
+  try {
+    const response = await fetch(`http://localhost:5037/${id}`, {
+      method: 'GET'
+    })
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null
+  }
+}

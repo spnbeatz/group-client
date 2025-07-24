@@ -6,7 +6,8 @@
 /*     background: radial-gradient(circle, #152625, #bb077e); */
 /*     background: radial-gradient(circle, #c4330b, #f54e7e); */
 /*     background: linear-gradient(267deg, #c607ab, #b7792e); */
-    background: linear-gradient(180deg, #9eb3db 0%, #d6d6d6 100%);
+/*     background: linear-gradient(180deg, #9eb3db 0%, #d6d6d6 100%); */
+        background-color: #dddddd;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -22,3 +23,54 @@
     margin-right: 2px;
     
 }
+
+.EmojiPickerReact {
+    --epr-emoji-size: 25px !important; /* Ustawia rozmiar emoji */
+    --epr-emoji-gap: 10px;   /* Ustawia odstęp między emoji */
+    --epr-hover-bg-color: #f0f0f0;  /* Kolor tła po najechaniu na emoji */
+    --epr-bg-color: #ffffff; /* Kolor tła pickera */
+    --epr-category-label-bg-color: #f9f9f9; /* Kolor tła kategorii */
+    --epr-text-color: #333333;  /* Kolor tekstu */
+    
+}
+
+/* Przykład dla ciemnego motywu */
+.EmojiPickerReact.epr-dark-theme {
+    --epr-emoji-size: 30px; /* Zmieniony rozmiar dla ciemnego motywu */
+    --epr-emoji-gap: 8px;    /* Zmieniony odstęp między emoji */
+    --epr-hover-bg-color: #555555;  /* Kolor tła po najechaniu w ciemnym motywie */
+    --epr-bg-color: #333333; /* Kolor tła pickera w ciemnym motywie */
+    --epr-category-label-bg-color: #444444; /* Kolor tła kategorii w ciemnym motywie */
+    --epr-text-color: #eeeeee;  /* Kolor tekstu w ciemnym motywie */
+}
+
+.grid-cols-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.editor {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    outline: none
+  }
+  
+  .editor span {
+    text-decoration: none; /* Domyślne brak podkreślenia */
+  }
+  
+  .editor span.hashtag {
+    text-decoration: underline; /* Podkreślenie dla słów zaczynających się od @ */
+  }
+
+  .editor:focus {
+    border: none;
+    outline: none;
+  }
+
+  .post-window-bg {
+    background: rgb(255,255,255);
+    background: linear-gradient(90deg, rgba(255,255,255,0.22172619047619047) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.17690826330532217) 100%);
+  }

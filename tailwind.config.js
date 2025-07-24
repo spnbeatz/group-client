@@ -14,6 +14,10 @@ module.exports = {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
       },
+      screens: {
+        '3xl': '1920px',
+        '4xl': '3000px'
+      }
     },
   },
   darkMode: "class",

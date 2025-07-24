@@ -6,22 +6,25 @@ import { Button } from "@heroui/button";
 import { inputIconSize } from '@/config/sizes';
 import {Input} from "@heroui/input";
 import {Visibility, VisibilityOff, Mail, Key} from "@mui/icons-material";
+import { useAuthQuery } from '@/queries/useAuth';
 
 interface User {
-  Email: string;
-  Password: string;
+  email: string;
+  password: string;
 }
 
 interface LoginProps {
   setScreen: React.Dispatch<React.SetStateAction<string>>;
-  login: (token: string, rememberMe: boolean) => void
+
 }
 
-export const LoginForm: React.FC<LoginProps> = ({ setScreen, login: setToken }) => {
+export const LoginForm: React.FC<LoginProps> = ({ setScreen }) => {
+
+    const { loginMutation } = useAuthQuery();
 
     const [values, setValues] = useState<User>({
-      Email: '',
-      Password: ''
+      email: '',
+      password: ''
     });
 
     const [isVisible, setIsVisible] = useState<boolean>();
@@ -33,7 +36,7 @@ export const LoginForm: React.FC<LoginProps> = ({ setScreen, login: setToken }) 
 
     const onValueChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      type: "Email" | "Password"
+      type: "email" | "password"
     ) => {
       const valueCopy = {...values};
       valueCopy[`${type}`] = e.target.value;
@@ -45,14 +48,7 @@ export const LoginForm: React.FC<LoginProps> = ({ setScreen, login: setToken }) 
       console.log(userData, "userData login attempt");
     
       try {
-        const token = await login(userData);
-        console.log(token, "returned token from login attempt");
-        if (token) {
-          setToken(token, rememberMe);
-          console.log('Dane do wysłania:', userData, "token ", token);
-        } else {
-          console.error("Login failed. Token not returned.");
-        }
+        loginMutation.mutate(userData);
       } catch (error) {
         console.error("Error during login:", error);
       }
@@ -74,7 +70,7 @@ export const LoginForm: React.FC<LoginProps> = ({ setScreen, login: setToken }) 
         <Input 
           startContent={<Mail className="text-default-400 pointer-events-none" style={{width: inputIconSize}}/>}
           isClearable
-          onChange={(e) => onValueChange(e, "Email")}
+          onChange={(e) => onValueChange(e, "email")}
           placeholder='E-mail'
           type="email"
           variant="bordered"
@@ -83,7 +79,7 @@ export const LoginForm: React.FC<LoginProps> = ({ setScreen, login: setToken }) 
         <Input 
           startContent={<Key className="text-default-400 pointer-events-none" style={{width: inputIconSize}}/>}
           type={isVisible ? "text" : "password"}
-          onChange={(e) => onValueChange(e, "Password")}
+          onChange={(e) => onValueChange(e, "password")}
           placeholder='Password'
           variant="bordered"
           size='md'
