@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMinUserData } from "@/api/user";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 
 export const userBasicQuery = (userId: string) => {

@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@heroui/button"
 import { Input } from "@heroui/input"
 import { Search as SearchIcon, Close } from "@mui/icons-material"
 import { useEffect, useState } from "react"
@@ -11,12 +10,12 @@ import { SearchList } from "./SearchList"
 
 export const Search = () => {
 
-    const [ searchValue, setSearchValue ] = useState<string>("");
-    const [ searchItems, setSearchItems ] = useState<any>([]);
+    const [searchValue, setSearchValue] = useState<string>("");
+    const [searchItems, setSearchItems] = useState<any>([]);
 
     useEffect(() => {
         const fetchSearch = async () => {
-            if(searchValue.length > 0){
+            if (searchValue.length > 0) {
                 const results = await search(searchValue);
                 console.log(results, "ressults")
                 setSearchItems(results);
@@ -26,7 +25,7 @@ export const Search = () => {
         }
 
         fetchSearch();
-        
+
     }, [searchValue]);
 
     const clearList = () => {
@@ -39,21 +38,21 @@ export const Search = () => {
     }, [searchItems])
 
     return (
-        <Tooltip 
-            className="w-80" 
+        <Tooltip
+            className="w-80"
             placement="bottom"
             isOpen={searchItems.length > 0}
-            content={<SearchList items={searchItems} clearList={clearList}/>}
-           
+            content={<SearchList items={searchItems} clearList={clearList} />}
+
         >
-            <div 
+            <div
                 className="w-80"
             >
-                <Input 
-                    color={"default"} 
+                <Input
+                    color={"default"}
                     autoComplete="hidden"
                     variant="flat"
-                    placeholder="Search ..." 
+                    placeholder="Search ..."
                     className=""
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
@@ -61,17 +60,17 @@ export const Search = () => {
                         inputWrapper: "border-black/30 border-1"
                     }}
                     startContent={(
-                        <SearchIcon fontSize="small"/>
+                        <SearchIcon fontSize="small" />
                     )}
 
                     endContent={searchValue.length > 0 ?
-                        <div 
+                        <div
                             className="cursor-pointer h-full flex items-center justify-center"
                             onClick={() => setSearchValue("")}
                         >
-                            <Close 
-                                fontSize="small" 
-                                
+                            <Close
+                                fontSize="small"
+
                             />
                         </div>
                         : null

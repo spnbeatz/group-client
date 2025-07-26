@@ -1,20 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface UserDataProps {
-  _id: string;
-  email: string;
-  username: string;
-  sex: string;
-  avatar: string;
-  status: string;
-  followers: string[] | null;
-  followings: string[] | null;
-}
-
-interface AuthState {
-  token: string | null;
-  userData: UserDataProps | null;
-}
+import { UserDataProps, AuthState } from "@/types/user";
 
 const getInitialToken = (): string | null => {
   if (typeof window !== "undefined") {

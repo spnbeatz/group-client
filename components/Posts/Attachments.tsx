@@ -1,6 +1,5 @@
-import { Carousel } from 'react-responsive-carousel';
 
-export const Attachments = ({ attachments }: { attachments?: [{ type: string;  id: string }] }) => {
+export const Attachments = ({ attachments }: { attachments?: { type: string;  id: string }[] }) => {
     return (
         <div className="w-full">
                 {attachments && attachments.length > 0 && 

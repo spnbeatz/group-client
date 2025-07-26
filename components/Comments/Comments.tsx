@@ -1,8 +1,6 @@
-import { useState, Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { Comment } from "./Comment";
-import { CommentForm } from "./CommentForm";
-
-import { CommentProps } from "@/types";
+import { IComment } from "@/types/posts";
 
 export const Comments = ({
     postId,
@@ -14,18 +12,18 @@ export const Comments = ({
     fetchChildComments
 } : {
     postId: string,
-    comments: CommentProps[],
+    comments: IComment[],
     limit: number,
     setLimit: Dispatch<SetStateAction<number>>,
     count: number,
-    sendComment: (comment: CommentProps) => void,
+    sendComment: (comment: IComment) => void,
     fetchChildComments: (parentId: string | undefined) => void
 }) => {
 
     return (
         <div className="w-full flex flex-col justify-end items-center h-full">
             <div className="w-full flex flex-col flex-start h-full">
-                {comments && comments.map((comment, index) => {
+                {comments && comments.map((comment: IComment, index: number) => {
                     return (
                         <Comment 
                             comment={comment} 

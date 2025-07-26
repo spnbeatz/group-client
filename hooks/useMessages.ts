@@ -1,22 +1,27 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import socket from "@/services/chatSocket";
-import { FormattedMessagesProps } from "@/types";
+import { FormattedMessagesProps, Message } from "@/types/chat";
 import { formatMessages } from "@/utils/chatHelpers";
 import { useChatMessages } from "@/queries/useMessages";
-import { ISendMessage } from "@/types";
+import { ISendMessage } from "@/types/chat";
+import { useMessageSocket } from "@/context/MessageContextProvider";
 
 
 export const useMessages = (chatId: string) => {
-    const [messages, setMessages] = useState<FormattedMessagesProps[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [formattedMessages, setFormattedMessages] = useState<FormattedMessagesProps[]>([]);
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useChatMessages(chatId);
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useChatMessages(chatId);
+
+    const socket = useMessageSocket();
+
+    useEffect(() => {
+        refetch();
+    }, [])
 
     useEffect(() => {
         if (data) {
-            console.log(data, "use effect data messages")
             setMessages(data.pages.flat())
         }
     }, [data])
@@ -33,29 +38,38 @@ export const useMessages = (chatId: string) => {
     }, [formattedMessages])
 
     useEffect(() => {
-        socket.connect();
-        socket.emit("joinChat", chatId);
+        if (!socket || !chatId) return;
 
-        socket.on("receiveMessage", (message) => {
-            console.log(message, " received message")
-            console.log(data?.pages.flat(), " lista wiaodmosci do polacznia")
-            setMessages((prevMessages) => {
-                const updatedMessages = [...prevMessages, message];
-                return updatedMessages;
+        const handleReceiveMessage = (message: Message) => {
+            console.log("Received message:", message);
+
+            setMessages((prevMessages: Message[]) => {
+                return [...prevMessages, message];
             });
-        });
+        };
 
-        // zrobic openchat jesli nie jest open 
+        socket.emit("joinChat", chatId);
+        socket.on("receiveMessage", handleReceiveMessage);
 
         return () => {
             socket.emit("leaveChat", chatId);
-            socket.off("receiveMessage");
+            socket.off("receiveMessage", handleReceiveMessage); // ważne!
         };
-    }, []);
+    }, [socket, chatId]);
 
     const newMessage = (message: ISendMessage) => {
+        if (!socket) {
+            console.warn("Socket not initialized yet.");
+            return;
+        }
+
+        if (!socket.connected) {
+            socket.connect(); // opcjonalnie
+        }
+
         socket.emit("sendMessage", message);
-    }
+    };
+
 
 
     return { formattedMessages, newMessage, fetchNextPage, hasNextPage, isFetchingNextPage }

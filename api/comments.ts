@@ -1,4 +1,4 @@
-import { CommentProps } from "@/types"
+import { CommentProps } from "@/types/f"
 
 const commentsEndpoint = "http://localhost:5021/interactions"
 

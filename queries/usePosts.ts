@@ -1,11 +1,9 @@
-import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
-import { useSelector, useDispatch } from "react-redux";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { getComments, getChildComments } from "@/api/comments";
-import { CommentProps } from "@/types";
 import * as post from "@/api/post";
-import { PostProps } from "@/types";
-import { getMinUserData } from "@/api/user";
+import { IPost } from "@/types/posts";
 import { PostsFilter } from "@/types/posts";
 
 export const useCommentsQuery = (postId: string, parentLimit: number) => {
@@ -49,7 +47,7 @@ export const usePostsQuery = (limit: number, skip: number, filter?: PostsFilter 
 
 export const usePostMutation = () => {
     const token = useSelector((state: RootState) => state.auth.token);
-    const createPost = useMutation<{ post: PostProps }, Error, [File[], { text: string, user: string }]>({
+    const createPost = useMutation<{ post: IPost }, Error, [File[], { text: string, user: string }]>({
         mutationFn: async ([files, value]) => {
             const newPost = await post.sendPostData(files, value, token);
             return newPost

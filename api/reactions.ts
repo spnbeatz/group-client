@@ -1,4 +1,4 @@
-import { ReactionProps } from "@/types";
+import { ReactionProps } from "@/types/f";
 
 const reactionsEndpoint = "http://localhost:5021/interactions";
 

@@ -4,19 +4,25 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as chat from "@/api/chat";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { setChatList, addActiveChat, removeActiveChat, updateMinimizedChat } from "@/state/reducers/chatSlice";
-import { Participant } from "@/types/chat";
+import { setChatList, addActiveChat } from "@/state/reducers/chatSlice";
+import { ChatParticipant } from "@/types/chat";
+import { store } from "@/state/store";
+
 
 
 export const useChatQuery = () => {
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
-    const {token, userData} = useSelector((state: RootState) => state.auth);
+    const { token, userData } = useSelector((state: RootState) => state.auth);
     const activeChats = useSelector((state: RootState) => state.chat.activeChats);
 
     const openChat = async (chatId: string) => {
+        const state = store.getState();
+        const activeChats = state.chat.activeChats;
+
         if (activeChats.some((chat) => chat.id === chatId)) {
-            return; // Czat już jest aktywny, nie robimy nic
+            console.log("chat już otwarty");
+            return;
         }
 
         try {
@@ -28,7 +34,7 @@ export const useChatQuery = () => {
     };
 
     const createChatMutation = useMutation({
-        mutationFn: async (participants: Participant[]) => {
+        mutationFn: async (participants: ChatParticipant[]) => {
             const { chatId } = await chat.createChat(participants, token);
             await openChat(chatId); // 🔹 Po utworzeniu od razu otwieramy czat
         },
@@ -45,12 +51,12 @@ export const useChatQuery = () => {
                 dispatch(setChatList(data));
                 return data;
             } else throw new Error("Brak tokena");
-            
+
         },
         refetchInterval: 10000, // Polling co 10 sekund
         enabled: !!token && !!userData,
     })
 
-    return { createChatMutation, getChatListQuery, openChat}
+    return { createChatMutation, getChatListQuery, openChat }
 
 }

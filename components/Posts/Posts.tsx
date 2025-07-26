@@ -3,7 +3,7 @@
 import { AddPost } from "./AddPost";
 import { useState, useEffect, useRef } from "react";
 import { Post } from "./Post";
-import { PostProps } from "@/types";
+import { IPost } from "@/types/posts";
 import { usePostsQuery } from "@/queries/usePosts";
 import { PostsFilter } from "@/types/posts";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +35,7 @@ export const Posts = ({
         }
     }, [data])
 
-    const insertNewPost = (newPost: PostProps) => {
+    const insertNewPost = (newPost: IPost) => {
         dispatch(insertPost(newPost))
     };
 
@@ -46,7 +46,7 @@ export const Posts = ({
         const bottom = container.scrollHeight === container.scrollTop + container.clientHeight;
         
         if (bottom && !isLoading && !isSuccess) {
-            setSkip((prevSkip) => prevSkip + limit); // Zwiększamy skip, by załadować kolejne posty
+            setSkip((prevSkip) => prevSkip + limit);
         }
     };
 
@@ -58,7 +58,7 @@ export const Posts = ({
             ref={postsContainerRef}
         >
             <AddPost insertNewPost={insertNewPost} />
-            {posts?.map((post: PostProps, index: number) => (
+            {posts?.map((post: IPost, index: number) => (
                 <Post key={post.createdAt + post.user + index} post={post} />
             ))}
             {isLoading && <p>Loading...</p>}

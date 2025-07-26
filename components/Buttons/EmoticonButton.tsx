@@ -6,7 +6,7 @@ import HappyFace from "@/assets/happy-face.png";
 export const EmoticonButton = ({
     addEmoji,
     className
-}:{
+}: {
     addEmoji: (emoji: string) => void,
     className?: string
 }) => {
@@ -14,11 +14,11 @@ export const EmoticonButton = ({
         <Popover showArrow placement="bottom">
             <PopoverTrigger>
                 <div className={`w-8 h-8 flex-shrink-0 ${className}`}>
-                    <Image src={HappyFace.src} className="w-full h-full"/>
+                    <Image src={HappyFace.src} className="w-full h-full" />
                 </div>
             </PopoverTrigger>
             <PopoverContent className="p-1">
-                <EmojiPicker 
+                <EmojiPicker
                     className="text-sm w-1/2"
                     lazyLoadEmojis
                     searchDisabled

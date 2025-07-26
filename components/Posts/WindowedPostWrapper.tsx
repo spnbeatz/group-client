@@ -1,7 +1,5 @@
-import { MinUserProps } from "@/types";
+import { UserMinimal } from "@/types/user";
 import { Close } from "@mui/icons-material";
-import { AnswerCommentForm } from "../Comments/AnswerCommentForm";
-import { CommentForm } from "../Comments/CommentForm";
 
 export const WindowedPostWrapper = ({
     children,
@@ -14,7 +12,7 @@ export const WindowedPostWrapper = ({
     children: React.ReactNode,
     isWindowed: boolean,
     showCommentForm: boolean,
-    user: MinUserProps | undefined,
+    user: UserMinimal | undefined,
     closeWindow: () => void,
     postId: string
 }) => {

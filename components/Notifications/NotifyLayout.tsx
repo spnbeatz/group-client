@@ -2,34 +2,41 @@
 
 import { useEffect, useState } from "react"
 import { Notify } from "./Notify"
-import socket from "@/services/notifySocket"
 import { useSelector } from "react-redux"
 import { RootState } from "@/state/store"
 import { AnimatePresence } from "framer-motion"
+import { useChatQuery } from "@/queries/useChat"
+import { useNotifySocket } from "@/context/NotifySocketProvider";
+import { NotifyProps } from "@/types/notifies"
 
-export interface NotifyProps {
-    contendId: string,
-    userId: string,
-    isRead: boolean,
-    content: string,
-    sendAt: string,
-    type: string,
-}
+
 
 export const NotifyLayout = () => {
     const userData = useSelector((state: RootState) => state.auth.userData);
     const [notifies, setNotifies] = useState<NotifyProps[]>([]);
 
-    console.log("SASDASDA")
+    const { openChat } = useChatQuery();
+
+    const socket = useNotifySocket();
 
     useEffect(() => {
-        if (!userData?._id) return;
+        if (!userData?._id || !socket) return;
 
-        socket.connect();
+
         socket.emit("subscribe", userData._id);
 
-        const handleNotification = (message: NotifyProps) => {
-            setNotifies((prev) => [...prev, message]);
+        const handleNotification = async (message: NotifyProps) => {
+            console.log(message, " received notify")
+
+            switch (message.type) {
+                case "push.message":
+                    await openChat(message.contentId)
+                    break;
+                default:
+                    setNotifies((prev) => [...prev, message]);
+            }
+            // push.message
+
         };
 
         socket.on("new_notification", handleNotification);

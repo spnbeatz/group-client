@@ -4,7 +4,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMessages } from "@/api/chat";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { MessageProps } from "@/types";
 
 export const useChatMessages = (chatId: string, limit = 20) => {
     const token = useSelector((state: RootState) => state.auth.token);

@@ -1,5 +1,5 @@
 import { Close } from "@mui/icons-material";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeActiveChat } from "@/state/reducers/chatSlice";
 
 export const CloseChatButton = ({chatId}: {chatId: string}) => {

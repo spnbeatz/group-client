@@ -1,37 +1,35 @@
 import { Avatar } from "@heroui/avatar"
-import { PostProps } from "@/types"
-import { useEffect, useState, useRef } from "react"
+import { useState, useRef } from "react"
 import { formatDate } from "@/config/dateFormat"
-import { Comments } from "../Comments/Comments";
 import { PostModal } from "./PostModal";
-import { WindowedPostWrapper } from "./WindowedPostWrapper"
 import { Reactions } from "../Buttons/Reactions";
 import Linkify from "linkify-react";
 import { userBasicQuery } from "@/queries/useUsers"
 import { Attachments } from "./Attachments";
-import { MinUserProps } from "@/types";
+import { IPost } from "@/types/posts";
+import { UserMinimal } from "@/types/user";
 
 
-export const Post = ({post}: {post: PostProps}) => {
-    
-    const [ showCommentForm, setShowCommentForm ] = useState<boolean>(false);
-    const [ isWindowed, setIsWindowed ] = useState<boolean>(false);
+export const Post = ({ post }: { post: IPost }) => {
+
+    const [showCommentForm, setShowCommentForm] = useState<boolean>(false);
+    const [isWindowed, setIsWindowed] = useState<boolean>(false);
     const modalRef = useRef<any>(null);
     const { data: postUser, isLoading, isError, error } = userBasicQuery(post.user);
 
     const switchVisibilityOfCommentForm = () => {
-        if(isWindowed) {
+        if (isWindowed) {
             setShowCommentForm(!showCommentForm);
         } else {
             setIsWindowed(true);
             setShowCommentForm(!showCommentForm)
         }
-        
+
     }
 
     const openModal = () => {
         modalRef.current?.handleOpen();
-      };
+    };
 
     const closeWindowedPost = () => {
         setIsWindowed(false);
@@ -40,20 +38,20 @@ export const Post = ({post}: {post: PostProps}) => {
 
     return (
         <div className="w-full">
-            <PostModal ref={modalRef} post={post} postUser={postUser}/>
+            <PostModal ref={modalRef} post={post} postUser={postUser} />
             <div className={`w-full rounded-sm bg-white pt-6 pb-2 flex flex-col justify-center items-start gap-2 shadow-md mt-6 flex-shrink-0`}>
                 <PostHeader postUser={postUser} date={post.createdAt} />
                 <PostContent text={post.content.text} />
-                
+
                 <Attachments attachments={post.content.attachments} />
-                <Reactions postId={post._id} openPostModal={openModal} />       
-            </div> 
+                <Reactions postId={post._id} openPostModal={openModal} />
+            </div>
         </div>
 
     )
 }
 
-export const PostHeader = ({postUser, date} : {postUser: MinUserProps, date: string}) => {
+export const PostHeader = ({ postUser, date }: { postUser: UserMinimal, date: string }) => {
     return (
         <div className="flex flex-row justify-start items-center gap-2 px-4 w-full">
             <Avatar src={postUser?.avatar} size="md" />
@@ -69,25 +67,25 @@ export const PostHeader = ({postUser, date} : {postUser: MinUserProps, date: str
     )
 }
 
-export const PostContent = ({text}: {text: string}) => {
+export const PostContent = ({ text }: { text: string }) => {
     return (
         <div className="text-slate-700 px-4 text-sm">
-            <Linkify options={{ 
-                target: "_blank", 
-                rel: "noopener noreferrer", 
+            <Linkify options={{
+                target: "_blank",
+                rel: "noopener noreferrer",
                 render: {
                     url: ({ attributes, content }) => {
                         // Usunięcie tagName, jeżeli istnieje, z atrybutów
                         const { tagName, ...cleanedAttributes } = attributes;
-        
+
                         // Renderowanie standardowych linków
                         return (
-                        <a {...cleanedAttributes} style={{ color: "blue" }}>
-                            {content}
-                        </a>
+                            <a {...cleanedAttributes} style={{ color: "blue" }}>
+                                {content}
+                            </a>
                         );
                     },
-                    },
+                },
             }}>{text}</Linkify>
         </div>
     )

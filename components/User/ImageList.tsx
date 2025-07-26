@@ -12,7 +12,7 @@ export const ImageList = () => {
         <PanelLabel label="Images" />
         <div className="grid grid-cols-3 gap-2">
           {posts.map((image, index) => {
-            return image.content.attachments?.map((attachment, attachmentIndex) => (
+            return image.content.attachments?.map((attachment: any, attachmentIndex: number) => (
               <div
                 key={image.createdAt + "2131" + index + attachmentIndex}
                 className="w-full aspect-square rounded-md overflow-hidden object-contain flex justify-center items-center"

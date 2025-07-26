@@ -1,7 +1,7 @@
 import { getChatList, getChatData } from '@/api/chat';
-import { MinUserProps, ChatListItemProps } from '../types';
+import { ChatListItem } from '@/types/chat';
 
-export const fetchChatList = async (userId: string, token: string | null): Promise<ChatListItemProps[]> => {
+export const fetchChatList = async (userId: string, token: string | null): Promise<ChatListItem[]> => {
   try {
     const chatList = await getChatList(userId, token);
     return chatList;

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Tooltip } from "@heroui/tooltip";
 
-export const CommentContent = ({value}: {value:string}) => {
+export const CommentContent = ({ value }: { value: string }) => {
 
-    const [ content, setContent ] = useState<string[]>([]);
+    const [content, setContent] = useState<string[]>([]);
 
     useEffect(() => {
-        if(value){
+        if (value) {
             const words = value.split(' ');
             setContent(words);
         }
@@ -14,7 +14,7 @@ export const CommentContent = ({value}: {value:string}) => {
 
     const renderWords = () => {
         return content.map((word) => {
-            if(word.startsWith('@')){
+            if (word.startsWith('@')) {
                 const formattedWord = word.slice(1)
                 return (
                     <Tooltip content="Hello" delay={500}>
@@ -22,8 +22,8 @@ export const CommentContent = ({value}: {value:string}) => {
                             <span className="bg-blue-200 rounded-md px-0.5 text-black">{formattedWord}</span>
                             <span> </span>
                         </span>
-                        
-                        
+
+
                     </Tooltip>
                 )
             } else {

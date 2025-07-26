@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ChatListItemProps, ActiveChatProps } from '@/types';
+import { ChatListItem, ActiveChat } from '@/types/chat';
 
 interface ChatState {
-  chatList: ChatListItemProps[] | null;
-  activeChats: ActiveChatProps[];
+  chatList: ChatListItem[] | null;
+  activeChats: ActiveChat[];
 }
 
 const initialState: ChatState = {
@@ -15,10 +15,10 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setChatList: (state, action: PayloadAction<ChatListItemProps[] | null>) => {
+    setChatList: (state, action: PayloadAction<ChatListItem[] | null>) => {
       state.chatList = action.payload;
     },
-    addActiveChat: (state, action: PayloadAction<ActiveChatProps>) => {
+    addActiveChat: (state, action: PayloadAction<ActiveChat>) => {
       state.activeChats.push(action.payload);
     },
     removeActiveChat: (state, action: PayloadAction<string>) => {

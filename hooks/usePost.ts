@@ -1,20 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { CommentProps } from "@/types"
+import { IComment } from "@/types/posts"
 import socket from "@/services/postSocket"
-import { useCommentsQuery, useChildCommentsQuery } from "@/queries/usePosts"
+import { useCommentsQuery } from "@/queries/usePosts"
 import { getChildComments } from "@/api/comments";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 
-interface CommentsData {
-    comments: CommentProps[];
-    count: number;
-}
-
 export const usePost = (postId: string, limit: number, isWindowed: boolean) => {
-    const [ comments, setComments ] = useState<CommentProps[]>([]);
+    const [ comments, setComments ] = useState<IComment[]>([]);
     const [ count, setCount ] = useState<number>(0);
     const token = useSelector((state: RootState) => state.auth.token);
 
@@ -32,7 +27,7 @@ export const usePost = (postId: string, limit: number, isWindowed: boolean) => {
             socket.connect();
             socket.emit("joinPost", postId);
     
-            socket.on("receiveComment", (newComment: CommentProps) => {
+            socket.on("receiveComment", (newComment: IComment) => {
                 setComments((prevComments) => addComment(prevComments, newComment));
             });
             
@@ -48,7 +43,7 @@ export const usePost = (postId: string, limit: number, isWindowed: boolean) => {
         console.log("comments all: ", comments)
     }, [comments])
 
-    const sendComment = (comment: CommentProps) => {
+    const sendComment = (comment: IComment) => {
         console.log("sending comment to websocket", comment);
         if (socket?.connected) {
             socket.emit("sendComment", comment);
@@ -57,7 +52,7 @@ export const usePost = (postId: string, limit: number, isWindowed: boolean) => {
         }
     };
 
-    const addComment = (comments: CommentProps[], newComment: CommentProps): CommentProps[] => {
+    const addComment = (comments: IComment[], newComment: IComment): IComment[] => {
         if(newComment.parentCommentId) {
             return comments.map((comment) => {
                 if(newComment.parentCommentId === comment._id){

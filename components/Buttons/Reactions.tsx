@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { countReactions } from "@/api/reactions";
-import { ReactionCountsProps } from "@/types";
+import { ReactionCounts } from "@/types/reactions";
 
 export const Reactions = ({
     postId,
@@ -15,7 +15,7 @@ export const Reactions = ({
 }) => {
 
     const token = useSelector((state: RootState) => state.auth.token);
-    const [ reactionCounts, setReactionCounts ] = useState<ReactionCountsProps | null>();
+    const [ reactionCounts, setReactionCounts ] = useState<ReactionCounts | null>();
 
     useEffect(() => {
         const getCount = async () => {

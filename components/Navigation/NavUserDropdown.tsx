@@ -1,18 +1,17 @@
 "use client"
 
-import {  Dropdown,  DropdownTrigger,  DropdownMenu,  DropdownSection,  DropdownItem} from "@heroui/dropdown";
-import { Avatar } from "@heroui/avatar";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/dropdown";
 import { User } from "@heroui/user";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/state/store";
 import { logout } from "@/state/reducers/authSlice";
 
-export const UserMenu = () => {
+export const NavUserDropdown = () => {
     const dispatch = useDispatch();
 
     const userData = useSelector((state: RootState) => state.auth.userData);
 
-    
+
 
     return (
         <div className="flex items-center gap-4">

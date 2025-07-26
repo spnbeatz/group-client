@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { Message } from "./Message";
+import { ChatMessage } from "./ChatMessage";
 import { useMessages } from "@/hooks/useMessages";
 
 
-export const ChatMessages = ({chatId} : {chatId: string}) => {
+export const ChatBody = ({ chatId }: { chatId: string }) => {
 
     const chatRef = useRef<HTMLDivElement>(null);
     const { formattedMessages, fetchNextPage, hasNextPage, isFetchingNextPage } = useMessages(chatId);
@@ -28,11 +28,11 @@ export const ChatMessages = ({chatId} : {chatId: string}) => {
             <div
                 onScroll={handleScroll}
                 className="w-full h-full flex flex-col-reverse gap-2 justify-start overflow-hidden overflow-y-auto"
-                ref={chatRef} 
+                ref={chatRef}
             >
                 {isFetchingNextPage && <p>loading</p>}
                 {formattedMessages && formattedMessages.slice().reverse().map((message) => (
-                    <Message message={message} key={message.date} />
+                    <ChatMessage message={message} key={message.date} />
                 ))}
             </div>
         </div>

@@ -9,20 +9,20 @@ import { useChatQuery } from "@/queries/useChat";
 import { createChat } from "@/api/chat";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { Participant } from "@/types/chat";
+import { ChatParticipant } from "@/types/chat";
 
 
 
-export const UserPanel = ({user, id} : {user: any, id:string | string[] | undefined}) => {
+export const UserPanel = ({ user, id }: { user: any, id: string | string[] | undefined }) => {
 
     const { token, userData } = useSelector((state: RootState) => state.auth);
 
     const { openChat } = useChatQuery();
 
-    const newChat = async (participants: Participant[]) => {
+    const newChat = async (participants: ChatParticipant[]) => {
         try {
             const createdChat = await createChat(participants, token);
-            if(createdChat) {
+            if (createdChat) {
                 console.log("utworzono czat: ", createdChat);
                 openChat(createdChat.chatId);
             } else {
@@ -35,7 +35,7 @@ export const UserPanel = ({user, id} : {user: any, id:string | string[] | undefi
 
     const handleCreateChat = () => {
         console.log(id, userData, "creating chat attempt")
-        if(userData && id){
+        if (userData && id) {
 
             const userSender = {
                 username: userData.username,
@@ -50,37 +50,37 @@ export const UserPanel = ({user, id} : {user: any, id:string | string[] | undefi
             }
             newChat([userReceiver, userSender]);
         }
-        
+
     }
 
     return (
         <Panel>
             <div className='w-full flex flex-col md:flex-row items-center justify-between gap-6'>
-                <Avatar src={user?.avatar} className='w-full h-full md:w-40 md:h-48 flex-shrink-0 rounded-sm'/>
+                <Avatar src={user?.avatar} className='w-full h-full md:w-40 md:h-48 flex-shrink-0 rounded-sm' />
                 <div className='flex flex-col items-start, justify-between w-full h-48'>
                     <div className="w-full flex flex-row items-center justify-between gap-4">
-                        
+
                         <Details details={user} />
-                        
+
                     </div>
-                    
+
                     <div className='flex flex-row justify-start items-center gap-1'>
-                            <Place className=' text-red-500' style={{fontSize: "11px"}}/>
-                            <p className='text-[10px] text-slate-500'>Poznań</p>
+                        <Place className=' text-red-500' style={{ fontSize: "11px" }} />
+                        <p className='text-[10px] text-slate-500'>Poznań</p>
                     </div>
                     <Description />
-                    
+
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                        
-                        <Counts counts={{followers: 1221, followings: 122, posts: 12}} />
-                        <ActionButtons onMessage={handleCreateChat}/>
+
+                        <Counts counts={{ followers: 1221, followings: 122, posts: 12 }} />
+                        <ActionButtons onMessage={handleCreateChat} />
                     </div>
-                    
-                    
+
+
                 </div>
-                
+
             </div>
 
-    </Panel>
+        </Panel>
     )
 }

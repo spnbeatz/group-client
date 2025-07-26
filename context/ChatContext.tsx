@@ -3,11 +3,12 @@ import { fetchChatList, fetchChatData } from '../services/chatService';
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { usePolling } from '../hooks/usePolling';
-import { ChatListItemProps, ActiveChatProps } from '../types';
+import { ActiveChat } from '@/types/chat';
+import { ChatListItem } from '@/types/chat';
 
 interface ChatContextProps {
-  activeChats: ActiveChatProps[];
-  chatList: ChatListItemProps[] | null;
+  activeChats: ActiveChat[];
+  chatList: ChatListItem[] | null;
   openChat: (chatId: string) => void;
   closeChat: (chatId: string) => void;
   minimizeChat: (chatId: string, newState: boolean) => void;
@@ -22,8 +23,8 @@ interface ChatProviderProps {
 const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const { token, userData } = useSelector((state: RootState) => state.auth);
 
-  const [activeChats, setActiveChats] = useState<ActiveChatProps[]>([]);
-  const [chatList, setChatList] = useState<ChatListItemProps[] | null>(null);
+  const [activeChats, setActiveChats] = useState<ActiveChat[]>([]);
+  const [chatList, setChatList] = useState<ChatListItem[] | null>(null);
   
   const pollingIntervalTime = usePolling(10000, () => {
     if (userData?._id) {

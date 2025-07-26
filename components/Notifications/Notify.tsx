@@ -1,12 +1,10 @@
-import { NotifyProps } from "./NotifyLayout"
+import { NotifyComponentProps } from "@/types/notifies";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
-interface NotifyComponentProps extends NotifyProps {
-    onRemove: () => void
-}
 
-export const Notify = ({ contendId, userId, isRead, content, sendAt, type, onRemove }: NotifyComponentProps) => {
+
+export const Notify = ({ contentId, userId, isRead, content, sendAt, type, onRemove }: NotifyComponentProps) => {
 
     useEffect(() => {
         const timer = setTimeout(() => {

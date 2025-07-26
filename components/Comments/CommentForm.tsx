@@ -6,20 +6,20 @@ import { EmoticonButton } from "../Buttons/EmoticonButton";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { CommentProps } from "@/types";
+import { IComment } from "@/types/posts";
 
 export const CommentForm = ({
     postId,
     sendComment
-} : {
+}: {
     postId: string,
-    sendComment: (comment: CommentProps) => void
+    sendComment: (comment: IComment) => void
 }) => {
 
     const { token, userData } = useSelector((state: RootState) => state.auth);
 
 
-    const [ commentValue, setCommentValue ] = useState<string>("");
+    const [commentValue, setCommentValue] = useState<string>("");
 
     const changeCommentText = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCommentValue(event.target.value);
@@ -31,8 +31,8 @@ export const CommentForm = ({
     }
 
     const submitComment = async () => {
-        if(postId && userData?._id && commentValue.length > 0 && token) {
-            const comment: CommentProps = {
+        if (postId && userData?._id && commentValue.length > 0 && token) {
+            const comment: IComment = {
                 userId: userData._id,
                 postId: postId,
                 parentCommentId: null,
@@ -48,12 +48,12 @@ export const CommentForm = ({
     }
 
     return (
-        <div 
+        <div
             className="w-full flex flex-col justify-between items-center gap-4 py-2"
         >
             <div className="w-full h-10 flex flex-row justify-between items-center gap-4">
-                <EmoticonButton addEmoji={addEmoji}/>
-                <Input 
+                <EmoticonButton addEmoji={addEmoji} />
+                <Input
                     placeholder="Write your comment..."
                     variant="flat"
                     classNames={{

@@ -1,13 +1,13 @@
-import { MinUserProps, PostProps } from "@/types";
+
+import { UserMinimal } from "@/types/user";
+import { IPost } from "@/types/posts";
 import {
     Modal,
     ModalContent,
-    ModalHeader,
     ModalBody,
-    ModalFooter,
     useDisclosure
   } from "@heroui/modal";
-import { forwardRef, useImperativeHandle, useEffect, useState, useRef } from "react";
+import { forwardRef, useImperativeHandle, useState, useRef } from "react";
 import { Comments } from "../Comments/Comments";
 import { PostHeader, PostContent } from "./Post";
 import { Attachments } from "./Attachments";
@@ -21,8 +21,8 @@ export const PostModal = forwardRef(
         post,
         postUser
       }: {
-        post?: PostProps;
-        postUser: MinUserProps
+        post?: IPost;
+        postUser: UserMinimal
       },
       ref
     ) => {
@@ -54,14 +54,12 @@ export const PostModal = forwardRef(
                 {(onClose) => (
                     <>
                     <ModalBody className="w-full flex flex-col justify-between items-start h-full">
-
                         <p className="text-lg font-bold p-4"> 
                             spnbeatz's post
                         </p>
                         <div className="flex flex-col gap-2 h-full overflow-y-scroll scrollbar-hide" ref={scrollRef}>
                             <PostHeader postUser={postUser} date={post.updatedAt} />
-                            <PostContent text={post.content.text} />
-                            
+                            <PostContent text={post.content.text} />    
                             <Attachments attachments={post.content.attachments} />
                             <InteractionCounts postId={post._id} />
                             <Comments 
@@ -75,12 +73,8 @@ export const PostModal = forwardRef(
                             />
                         </div>
                         <CommentForm postId={post._id} sendComment={sendComment} />
-
                     </ModalBody>
-
-
                     </>
-
                 )}
                 </ModalContent>
             ): (

@@ -5,7 +5,7 @@ import { Button } from "@heroui/button";
 import { NearMeRounded as SendIcon } from "@mui/icons-material";
 import { RootState } from "@/state/store";
 import { useSelector } from "react-redux";
-import { ChatParticipants, ISendMessage } from "@/types";
+import { ChatParticipant, ISendMessage } from "@/types/chat";
 import { useMessages } from "@/hooks/useMessages";
 
 
@@ -18,7 +18,7 @@ export const ChatForm = (
 ) => {
 
     const userData = useSelector((state: RootState) => state.auth.userData);
-    const participants: ChatParticipants[] | undefined = useSelector((state: RootState) =>
+    const participants: ChatParticipant[] | undefined = useSelector((state: RootState) =>
         state.chat.activeChats.find(chat => chat.id === chatId)?.participants
     );
 

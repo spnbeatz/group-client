@@ -6,10 +6,10 @@ import { login, logout, setUserData } from "@/state/reducers/authSlice";
 import { useEffect } from "react";
 
 interface RegisterDataProps {
-    email: string,
-    username: string,
-    password: string,
-    sex: string,
+  email: string,
+  username: string,
+  password: string,
+  sex: string,
 }
 
 export const useAuthQuery = () => {
@@ -36,7 +36,7 @@ export const useAuthQuery = () => {
   const registerMutation = useMutation({
     mutationFn: async (registerData: RegisterDataProps) => {
       const response = await register(registerData);
-  
+
       if (response.status === "success") {
         loginMutation.mutate({ email: registerData.email, password: registerData.password });
       } else {

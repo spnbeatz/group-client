@@ -16,15 +16,15 @@ export const ImageButton = ({
 
     return (
         <div className="w-8 h-8 flex-shrink-0" onClick={() => openFileInput()}>
-            <input 
-                ref={inputFileRef} 
-                multiple 
-                type="file" 
-                accept="image/*, video/*" 
+            <input
+                ref={inputFileRef}
+                multiple
+                type="file"
+                accept="image/*, video/*"
                 className="hidden"
                 onChange={(e) => fileChange(e)}
             />
-            <Image src={ImageIcon.src} className="w-full h-full rounded-md"/>
+            <Image src={ImageIcon.src} className="w-full h-full rounded-md" />
         </div>
 
     )
